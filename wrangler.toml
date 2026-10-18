@@ -1,0 +1,34 @@
+name = "bansosrouter"
+main = "src/index.ts"
+compatibility_date = "2025-02-14"
+
+# Serve React 19 BansosRouter Dashboard SPA + API Gateway from a single Cloudflare Worker URL
+assets = { directory = "./dist/client", binding = "ASSETS", not_found_handling = "single-page-application" }
+
+# Proactive Cron Trigger (every 15 minutes):
+# 1. Auto-refresh expiring OAuth tokens (Qwen Code, Gemini CLI, Copilot, Kiro, Antigravity)
+# 2. Reset expired 5-hour / daily free-tier token windows
+# 3. Clean up old usage logs & synchronize provider health states
+[triggers]
+crons = ["*/15 * * * *"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "bansosrouter-db"
+database_id = "457a9462-5a56-4676-a300-983ac7c8e691"
+migrations_dir = "migrations"
+
+[[kv_namespaces]]
+binding = "FLAREROUTE_KV"
+id = "12a14abeb57e4d5cb0ee0d0fffa117cc"
+preview_id = "12a14abeb57e4d5cb0ee0d0fffa117cc"
+
+# Native Cloudflare Workers AI binding (10,000 Free Neurons/day — Zero-API-Key Edge Inference)
+[ai]
+binding = "AI"
+
+[vars]
+FLAREROUTE_VERSION = "1.0.0-bansos"
+DEFAULT_ROUTING_STRATEGY = "thrifty"
+DEFAULT_COMPRESSION_PROFILE = "balanced"
+BANSOS_ZERO_COST_LOCK = "true"

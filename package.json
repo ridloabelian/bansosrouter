@@ -1,0 +1,35 @@
+{
+  "name": "bansosrouter",
+  "version": "1.0.0",
+  "private": true,
+  "description": "BansosRouter — 100% Free-Tier & Rp 0 ($0) AI LLM Gateway untuk Developer Jelata on Cloudflare Workers + D1 + KV",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "wrangler dev",
+    "deploy": "npm run build && wrangler deploy",
+    "db:migrate:local": "wrangler d1 migrations apply bansosrouter-db --local",
+    "db:migrate:remote": "wrangler d1 migrations apply bansosrouter-db --remote",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.40.0",
+    "hono": "^4.7.2",
+    "lucide-react": "^0.475.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.0.0",
+    "@cloudflare/workers-types": "^4.20250214.0",
+    "@tailwindcss/vite": "^4.0.6",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "drizzle-kit": "^0.30.4",
+    "tailwindcss": "^4.0.6",
+    "typescript": "^5.7.3",
+    "vite": "^6.1.0",
+    "wrangler": "^4.0.0"
+  }
+}
