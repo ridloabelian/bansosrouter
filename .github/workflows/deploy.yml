@@ -1,4 +1,4 @@
-name: Deploy FlareRoute to Cloudflare Workers
+name: Deploy BansosRouter to Cloudflare Workers
 
 on:
   push:
@@ -39,9 +39,9 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: d1 migrations apply flareroute-db --remote
+          command: d1 migrations apply bansosrouter-db --remote
 
-      - name: Deploy FlareRoute to Cloudflare Workers
+      - name: Deploy BansosRouter to Cloudflare Workers
         if: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
         uses: cloudflare/wrangler-action@v3
         with:

@@ -15,13 +15,13 @@ crons = ["*/15 * * * *"]
 [[d1_databases]]
 binding = "DB"
 database_name = "bansosrouter-db"
-database_id = "457a9462-5a56-4676-a300-983ac7c8e691"
+database_id = "1d22ee64-da42-438e-a03d-793dd4787697"
 migrations_dir = "migrations"
 
 [[kv_namespaces]]
 binding = "FLAREROUTE_KV"
-id = "12a14abeb57e4d5cb0ee0d0fffa117cc"
-preview_id = "12a14abeb57e4d5cb0ee0d0fffa117cc"
+id = "d290c2e06f1e424ea5eb4056d9a1343b"
+preview_id = "d290c2e06f1e424ea5eb4056d9a1343b"
 
 # Native Cloudflare Workers AI binding (10,000 Free Neurons/day — Zero-API-Key Edge Inference)
 [ai]
