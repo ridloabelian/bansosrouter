@@ -338,7 +338,7 @@ export function App(): React.ReactElement {
   const [pgModel, setPgModel] = useState<string>('bansos/auto');
   const [pgStrategy, setPgStrategy] = useState<string>('reset-aware');
   const [pgPrompt, setPgPrompt] = useState<string>(
-    'Jelaskan bagaimana BansosRouter menggabungkan 24+ provider LLM gratisan menjadi 1 endpoint $0 (Rp 0) dengan UI 9Router!'
+    'Jelaskan bagaimana BansosRouter menggabungkan 24+ provider LLM gratisan menjadi 1 endpoint $0 (Rp 0) anti-limit!'
   );
   const [pgOutput, setPgOutput] = useState<string>('');
   const [pgHeaders, setPgHeaders] = useState<Record<string, string>>({});

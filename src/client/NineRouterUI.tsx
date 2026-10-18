@@ -597,7 +597,7 @@ export function Sidebar({
         </div>
       </div>
 
-      {/* App Logo (Identical to 9Router) */}
+      {/* App Logo */}
       <div className="px-6 py-4 mb-2 flex items-center gap-3">
         <div className="size-9 rounded-[10px] bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center text-white shrink-0 shadow-[var(--shadow-warm)]">
           <span className="material-symbols-outlined text-[20px]">hub</span>
@@ -612,7 +612,7 @@ export function Sidebar({
             </span>
           </div>
           <span className="text-[11px] text-emerald-500 font-medium mt-1">
-            9Router UI • Rp 0 / $0 Lock
+            100% Free-Tier • Rp 0 Lock
           </span>
         </div>
       </div>
