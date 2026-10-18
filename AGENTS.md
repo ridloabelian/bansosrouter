@@ -23,7 +23,12 @@
 - [`src/lib/provider-registry.ts`](./src/lib/provider-registry.ts) — Registri provider yang telah difilter khusus non-berbayar (`tier !== 'paid'`) + provider komunitas/bansos (`hetzner`, `aionlabs`, `bazaarlink`, `freeai`, `agnes`, `bynara`, `artbloom`, `kie-ai`).
 - [`src/lib/router.ts`](./src/lib/router.ts) & [`src/db/index.ts`](./src/db/index.ts) — Mesin routing 19 strategi + 7 virtual combo `bansos/*` (`bansos/auto`, `bansos/no-cc`, `bansos/coding`, `bansos/reasoning`, `bansos/fast`, `bansos/million-context`, `bansos/indo`).
 - [`src/routes/gateway.ts`](./src/routes/gateway.ts) & [`src/routes/admin.ts`](./src/routes/admin.ts) — Multi-protocol gateway (`/v1/chat/completions`, `/v1/responses`, `/v1/messages`, `/v1beta/models/...`) dan API admin termasuk `/api/admin/connections/seed-demo` (7 starter koneksi gratis).
-- [`src/client/App.tsx`](./src/client/App.tsx) — Dashboard BansosRouter (Katalog Bansos LLM, Kalkulator Kuota Token Bulanan, Filter Kartu Kredit, Watchlist Anti-Boncos, Generator Konfigurasi CLI 1-Klik).
+- [`src/sse/executor.ts`](./src/sse/executor.ts) — Zero-buffer SSE streaming + **16-Slot Per-Account SDK Fingerprint Isolation** (`SDK_FINGERPRINT_POOL`) untuk mencegah deteksi multi-akun di belakang IP Cloudflare.
+- [`src/client/NineRouterUI.tsx`](./src/client/NineRouterUI.tsx) & [`src/client/App.tsx`](./src/client/App.tsx) — Dashboard BansosRouter dengan arsitektur GUI identik **9Router** dan palet warna **Emerald Hijau Cuan (`#10B981`)**.
 
-## Riwayat Sesi Sebelumnya
-- Dibuat pada sesi Antigravity: `1ed0f073-f25e-4830-9d61-3b0e60a8cb69` (`~/.gemini/antigravity/brain/1ed0f073-f25e-4830-9d61-3b0e60a8cb69`).
+## Deployment & Repositori
+- **Live Cloudflare Worker**: `https://bansosrouter.ridloabelian.workers.dev`
+- **GitHub Repository**: `https://github.com/ridloabelian/bansosrouter` (Branch `main` protected via GitHub Ruleset)
+- **Riwayat Sesi Antigravity**:
+  - Sesi 1: `1ed0f073-f25e-4830-9d61-3b0e60a8cb69`
+  - Sesi 2: `3ba15b1f-d11c-4e9e-9906-7937e7b0ef18`
