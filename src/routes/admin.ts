@@ -445,6 +445,35 @@ adminRouter.post('/connections/seed-demo', async (c) => {
   return c.json({ ok: true, seeded: starterConns.length });
 });
 
+adminRouter.patch('/connections/:id', async (c) => {
+  const id = c.req.param('id');
+  const body = (await c.req.json()) as {
+    status?: string;
+    name?: string;
+    priority?: number;
+    baseUrl?: string | null;
+  };
+  await c.env.DB.prepare(
+    `UPDATE provider_connections
+     SET status = COALESCE(?, status),
+         name = COALESCE(?, name),
+         priority = COALESCE(?, priority),
+         base_url = COALESCE(?, base_url),
+         updated_at = ?
+     WHERE id = ?`
+  )
+    .bind(
+      body.status ?? null,
+      body.name ?? null,
+      body.priority ?? null,
+      body.baseUrl !== undefined ? body.baseUrl : null,
+      Date.now(),
+      id
+    )
+    .run();
+  return c.json({ ok: true });
+});
+
 adminRouter.delete('/connections/:id', async (c) => {
   const id = c.req.param('id');
   await c.env.DB.prepare(`DELETE FROM provider_connections WHERE id = ?`).bind(id).run();
@@ -584,6 +613,24 @@ adminRouter.post('/api-keys', async (c) => {
     rawKey,
     keyPrefix,
   });
+});
+
+adminRouter.patch('/api-keys/:id', async (c) => {
+  const id = c.req.param('id');
+  const body = (await c.req.json()) as { isActive?: boolean; name?: string };
+  await c.env.DB.prepare(
+    `UPDATE api_keys
+     SET is_active = COALESCE(?, is_active),
+         name = COALESCE(?, name)
+     WHERE id = ?`
+  )
+    .bind(
+      body.isActive === undefined ? null : body.isActive ? 1 : 0,
+      body.name ?? null,
+      id
+    )
+    .run();
+  return c.json({ ok: true });
 });
 
 adminRouter.delete('/api-keys/:id', async (c) => {

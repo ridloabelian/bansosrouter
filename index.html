@@ -1,12 +1,48 @@
 <!doctype html>
-<html lang="id" class="dark">
+<html lang="id" class="dark fonts-loaded" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BansosRouter — Router AI Bantuan Sosial 100% Gratis (Rp 0 / $0) untuk Developer Jelata</title>
-    <meta name="description" content="Gateway LLM 100% Free-Tier & Gratis Tanpa Kartu Kredit (~9.1 Miliar Token/Bulan dari 34 Provider Bansos) di atas Cloudflare Workers + D1 + KV" />
+    <meta name="color-scheme" content="light dark" />
+    <title>BansosRouter — Dashboard</title>
+    <meta
+      name="description"
+      content="BansosRouter — Universal 100% Free-Tier AI Router ($0 / Rp 0 Lock) powered by 9Router UI & Cloudflare Edge"
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem('theme-preference');
+          var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+          document.documentElement.dataset.theme = theme;
+          if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
+          if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(function () {
+              document.documentElement.classList.add('fonts-loaded');
+            });
+          } else {
+            document.documentElement.classList.add('fonts-loaded');
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
-  <body class="bg-slate-950 text-slate-100 antialiased selection:bg-emerald-500/30 selection:text-emerald-200">
+  <body class="bg-bg text-text-main antialiased">
     <div id="root"></div>
     <script type="module" src="/src/client/main.tsx"></script>
   </body>

@@ -1,11 +1,314 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ============================================================
+   9Router palette — adopted from 9remote_private/web
+   Brand orange (dark) / soft coral (light), neutral warm bases
+   ============================================================ */
+:root,
+:root[data-theme="light"] {
+  /* Brand scale (light) - centered on #E56A4A */
+  --color-brand-50: #fdf1ed;
+  --color-brand-100: #fadccf;
+  --color-brand-200: #f4b59c;
+  --color-brand-300: #ee8d6a;
+  --color-brand-400: #ea7855;
+  --color-brand-500: #E56A4A;
+  --color-brand-600: #cc5236;
+  --color-brand-700: #a64027;
+  --color-brand-800: #7a2f1d;
+  --color-brand-900: #4d1e12;
+
+  /* Primary */
+  --color-primary: var(--color-brand-500);
+  --color-primary-hover: var(--color-brand-600);
+
+  /* Surfaces & backgrounds (light) */
+  --color-bg: #FDFAF6;
+  --color-bg-alt: #F7F3EE;
+  --color-surface: #ffffff;
+  --color-surface-2: #f4f4f5;
+  --color-surface-3: #e7e7e9;
+  --color-sidebar: rgba(244, 241, 236, 0.85);
+
+  /* Borders */
+  --color-border: #e5e7eb;
+  --color-border-subtle: #f1f1f3;
+
+  /* Text */
+  --color-text: #0a0a0a;
+  --color-text-main: #0a0a0a;
+  --color-text-muted: #6B7280;
+  --color-text-subtle: #9CA3AF;
+
+  /* Status */
+  --color-danger: #cf222e;
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-info: #3B82F6;
+
+  /* Radius */
+  --radius-brand: 10px;
+  --radius-brand-lg: 14px;
+
+  /* Shadows */
+  --shadow-soft: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+  --shadow-warm: 0 2px 12px -2px rgba(229, 106, 74, 0.18);
+  --shadow-elevated: 0 12px 28px -4px rgba(60, 50, 45, 0.06);
+  --shadow-elev:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.8),
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    0 12px 36px -8px rgba(15, 23, 42, 0.10);
+  --shadow-focus: 0 0 0 3px rgba(229, 106, 74, 0.18);
+
+  color-scheme: light;
+}
+
+.dark,
+:root[data-theme="dark"] {
+  --color-brand-50: #fdf1ed;
+  --color-brand-100: #fadccf;
+  --color-brand-200: #f4b59c;
+  --color-brand-300: #ee8d6a;
+  --color-brand-400: #ea7855;
+  --color-brand-500: #E56A4A;
+  --color-brand-600: #cc5236;
+  --color-brand-700: #a64027;
+  --color-brand-800: #7a2f1d;
+  --color-brand-900: #4d1e12;
+
+  --color-primary: #E56A4A;
+  --color-primary-hover: #cc5236;
+
+  /* Surfaces (dark - Claude-like neutral warm) */
+  --color-bg: #1a1a1a;
+  --color-bg-alt: #1F1F1E;
+  --color-surface: #262626;
+  --color-surface-2: #303030;
+  --color-surface-3: #3a3a3a;
+  --color-sidebar: rgba(30, 30, 30, 0.85);
+
+  --color-border: #333333;
+  --color-border-subtle: #2a2a2a;
+
+  --color-text: #ededed;
+  --color-text-main: #ededed;
+  --color-text-muted: #9ca3af;
+  --color-text-subtle: #6b7280;
+
+  --color-danger: #ef4444;
+  --color-success: #22c55e;
+  --color-warning: #fbbf24;
+  --color-info: #60a5fa;
+
+  --shadow-soft: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-warm: 0 2px 12px -2px rgba(229, 106, 74, 0.25);
+  --shadow-elevated: 0 12px 28px -4px rgba(0, 0, 0, 0.45);
+  --shadow-elev:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.06),
+    0 1px 2px rgba(0, 0, 0, 0.4),
+    0 16px 48px -8px rgba(0, 0, 0, 0.55);
+  --shadow-focus: 0 0 0 3px rgba(229, 106, 74, 0.18);
+
+  color-scheme: dark;
+}
+
+select {
+  color-scheme: light;
+}
+
+.dark select {
+  color-scheme: dark;
+}
+
+.dark select option {
+  background-color: var(--color-surface);
+  color: var(--color-text-main);
+}
+
+@theme inline {
+  --color-brand-50: var(--color-brand-50);
+  --color-brand-100: var(--color-brand-100);
+  --color-brand-200: var(--color-brand-200);
+  --color-brand-300: var(--color-brand-300);
+  --color-brand-400: var(--color-brand-400);
+  --color-brand-500: var(--color-brand-500);
+  --color-brand-600: var(--color-brand-600);
+  --color-brand-700: var(--color-brand-700);
+  --color-brand-800: var(--color-brand-800);
+  --color-brand-900: var(--color-brand-900);
+
+  --color-primary: var(--color-primary);
+  --color-primary-hover: var(--color-primary-hover);
+
+  --color-bg: var(--color-bg);
+  --color-bg-alt: var(--color-bg-alt);
+  --color-surface: var(--color-surface);
+  --color-surface-2: var(--color-surface-2);
+  --color-surface-3: var(--color-surface-3);
+  --color-sidebar: var(--color-sidebar);
+  --color-border: var(--color-border);
+  --color-border-subtle: var(--color-border-subtle);
+  --color-text: var(--color-text);
+  --color-text-main: var(--color-text-main);
+  --color-text-muted: var(--color-text-muted);
+  --color-text-subtle: var(--color-text-subtle);
+  --color-accent: var(--color-brand-500);
+  --color-danger: var(--color-danger);
+  --color-success: var(--color-success);
+  --color-warning: var(--color-warning);
+  --color-info: var(--color-info);
+
+  --color-bg-light: #FCFBF9;
+  --color-bg-dark: #1a1a1a;
+  --color-surface-light: #ffffff;
+  --color-surface-dark: #262626;
+  --color-sidebar-light: #F4F1EC;
+  --color-sidebar-dark: #1F1F1E;
+  --color-border-light: #e5e7eb;
+  --color-border-dark: #333333;
+  --color-text-main-light: #0a0a0a;
+  --color-text-main-dark: #ededed;
+  --color-text-muted-light: #6B7280;
+  --color-text-muted-dark: #9ca3af;
+
+  --radius-brand: var(--radius-brand);
+  --radius-brand-lg: var(--radius-brand-lg);
+
+  --shadow-soft: var(--shadow-soft);
+  --shadow-warm: var(--shadow-warm);
+  --shadow-elevated: var(--shadow-elevated);
+  --shadow-elev: var(--shadow-elev);
+  --shadow-focus: var(--shadow-focus);
+
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', system-ui, sans-serif;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text-main);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background-color: rgba(229, 106, 74, 0.25);
+  color: var(--color-primary);
+}
+.dark ::selection {
+  background-color: rgba(229, 106, 74, 0.3);
+  color: var(--color-brand-300);
+}
+
+input, textarea {
+  accent-color: var(--color-primary);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(156, 163, 175, 0.3);
+  border-radius: 20px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-primary);
+}
+
+.card-soft {
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-soft);
+  border-radius: var(--radius-brand-lg);
+}
+.card-elev {
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-elev);
+  border-radius: var(--radius-brand-lg);
+}
+
+.bg-vibrancy {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.72);
+}
+.dark .bg-vibrancy {
+  background: rgba(38, 38, 38, 0.72);
+}
+
+.traffic-lights {
+  display: flex;
+  gap: 8px;
+}
+.traffic-light {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+.traffic-light.red { background: #FF5F56; }
+.traffic-light.yellow { background: #FFBD2E; }
+.traffic-light.green { background: #27C93F; }
+
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined', sans-serif;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  font-feature-settings: 'liga';
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+.material-symbols-outlined.fill-1 {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+button {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]),
+label[for],
+summary,
+select {
+  cursor: pointer;
+}
+
+button:disabled,
+[role="button"][aria-disabled="true"] {
+  cursor: not-allowed;
+}
+
+.landing-grid {
+  background-image:
+    linear-gradient(to right, var(--color-accent) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-accent) 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.08;
+}
+.dark .landing-grid {
+  opacity: 0.04;
+}
+
 dialog:modal {
   overscroll-behavior: contain;
 }
 
 dialog::backdrop {
-  background-color: rgba(2, 6, 23, 0.75);
+  background-color: rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(4px);
   overflow: hidden;
   overscroll-behavior: contain;
