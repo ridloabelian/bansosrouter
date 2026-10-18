@@ -36,6 +36,7 @@ app.use(
       'X-BansosRouter-Provider',
       'X-BansosRouter-Model',
       'X-BansosRouter-Strategy',
+      'X-BansosRouter-Account-Persona',
       'X-BansosRouter-Cost-USD',
       'X-BansosRouter-Cost-IDR',
       'X-BansosRouter-Tokens-Saved',

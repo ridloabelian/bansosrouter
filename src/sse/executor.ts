@@ -93,6 +93,239 @@ export function getDefaultBaseUrlForProvider(provider: string): string {
   }
 }
 
+export interface SdkFingerprintPersona {
+  slot: number;
+  label: string;
+  userAgent: string;
+  headers: Record<string, string>;
+}
+
+/**
+ * 16 Distinct Official SDK Fingerprint Personas for Multi-Account Isolation.
+ * Each connection (`connection.id` or `personaSlot`) is deterministically pinned to a single
+ * consistent SDK identity so 10+ accounts on the same provider (e.g. Z.AI / BigModel, Groq, Gemini)
+ * appear as separate client applications/environments while remaining sticky per account.
+ */
+export const SDK_FINGERPRINT_POOL: Array<Omit<SdkFingerprintPersona, 'slot'>> = [
+  {
+    label: 'OpenAI/Python 1.64.0 (macOS arm64 • Py 3.12)',
+    userAgent: 'OpenAI/Python 1.64.0',
+    headers: {
+      'user-agent': 'OpenAI/Python 1.64.0',
+      'x-stainless-lang': 'python',
+      'x-stainless-package-version': '1.64.0',
+      'x-stainless-os': 'MacOS',
+      'x-stainless-arch': 'arm64',
+      'x-stainless-runtime': 'CPython',
+      'x-stainless-runtime-version': '3.12.8',
+      'accept-language': 'en-US,en;q=0.9',
+    },
+  },
+  {
+    label: 'OpenAI/JS 4.86.1 (Linux x64 • Node 22.13)',
+    userAgent: 'OpenAI/JS 4.86.1',
+    headers: {
+      'user-agent': 'OpenAI/JS 4.86.1',
+      'x-stainless-lang': 'js',
+      'x-stainless-package-version': '4.86.1',
+      'x-stainless-os': 'Linux',
+      'x-stainless-arch': 'x64',
+      'x-stainless-runtime': 'node',
+      'x-stainless-runtime-version': 'v22.13.1',
+      'accept-language': 'en-US,en;q=0.8,id;q=0.7',
+    },
+  },
+  {
+    label: 'zhipuai-sdk-python/2.1.5 (Linux x86_64 • Py 3.11)',
+    userAgent: 'zhipuai-sdk-python/2.1.5.20250106 python/3.11.11 Linux/6.8.0-51-generic',
+    headers: {
+      'user-agent': 'zhipuai-sdk-python/2.1.5.20250106 python/3.11.11 Linux/6.8.0-51-generic',
+      'x-request-sdk': 'zhipuai-sdk-python/2.1.5',
+      'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8',
+    },
+  },
+  {
+    label: 'Vercel AI SDK 4.1.22 (Node 20.18)',
+    userAgent: 'ai-sdk/openai/1.1.14 runtime/node.js/20.18.2',
+    headers: {
+      'user-agent': 'ai-sdk/openai/1.1.14 runtime/node.js/20.18.2',
+      'accept-language': 'en-US,en;q=0.9',
+    },
+  },
+  {
+    label: 'LangChain-OpenAI/0.3.7 (Ubuntu • Py 3.12)',
+    userAgent: 'langchain-openai/0.3.7 (Python 3.12.6; Linux x86_64)',
+    headers: {
+      'user-agent': 'langchain-openai/0.3.7 (Python 3.12.6; Linux x86_64)',
+      'x-stainless-lang': 'python',
+      'x-stainless-package-version': '1.61.1',
+      'x-stainless-os': 'Linux',
+      'x-stainless-arch': 'x86_64',
+      'x-stainless-runtime': 'CPython',
+      'x-stainless-runtime-version': '3.12.6',
+      'accept-language': 'en-US,en;q=0.9',
+    },
+  },
+  {
+    label: 'OpenAI/Go 1.37.0 (Go 1.23.5 • linux/amd64)',
+    userAgent: 'OpenAI/Go 1.37.0 (go1.23.5; linux/amd64)',
+    headers: {
+      'user-agent': 'OpenAI/Go 1.37.0 (go1.23.5; linux/amd64)',
+      'accept-language': 'en-US,en;q=0.9',
+    },
+  },
+  {
+    label: 'LiteLLM/1.61.15 (macOS arm64 • Py 3.11)',
+    userAgent: 'litellm/1.61.15',
+    headers: {
+      'user-agent': 'litellm/1.61.15',
+      'x-stainless-lang': 'python',
+      'x-stainless-package-version': '1.59.8',
+      'x-stainless-os': 'MacOS',
+      'x-stainless-arch': 'arm64',
+      'accept-language': 'en-US,en;q=0.9',
+    },
+  },
+  {
+    label: 'LlamaIndex/0.12.16 (Win11 amd64 • Py 3.12)',
+    userAgent: 'llama-index-py/0.12.16 (Python 3.12.4; Windows-11-amd64)',
+    headers: {
+      'user-agent': 'llama-index-py/0.12.16 (Python 3.12.4; Windows-11-amd64)',
+      'x-stainless-lang': 'python',
+      'x-stainless-package-version': '1.58.1',
+      'x-stainless-os': 'Windows',
+      'x-stainless-arch': 'amd64',
+      'accept-language': 'en-US,en;q=0.9',
+    },
+  },
+  {
+    label: 'OpenAI/JS 4.82.0 (Bun 1.2.2 • darwin/arm64)',
+    userAgent: 'OpenAI/JS 4.82.0',
+    headers: {
+      'user-agent': 'OpenAI/JS 4.82.0',
+      'x-stainless-lang': 'js',
+      'x-stainless-package-version': '4.82.0',
+      'x-stainless-os': 'MacOS',
+      'x-stainless-arch': 'arm64',
+      'x-stainless-runtime': 'bun',
+      'x-stainless-runtime-version': '1.2.2',
+      'accept-language': 'id-ID,id;q=0.9,en-US;q=0.8',
+    },
+  },
+  {
+    label: 'OpenAI-DotNet/2.1.0 (.NET 9.0 • win-x64)',
+    userAgent: 'OpenAI-DotNet/2.1.0 (.NET 9.0.2; Microsoft Windows 10.0.22631)',
+    headers: {
+      'user-agent': 'OpenAI-DotNet/2.1.0 (.NET 9.0.2; Microsoft Windows 10.0.22631)',
+      'accept-language': 'en-SG,en;q=0.9,id-ID;q=0.8',
+    },
+  },
+  {
+    label: 'SpringAI/1.0.0-M6 (Java 21 • Linux aarch64)',
+    userAgent: 'SpringAI/1.0.0-M6 (Java/21.0.6; Linux/aarch64)',
+    headers: {
+      'user-agent': 'SpringAI/1.0.0-M6 (Java/21.0.6; Linux/aarch64)',
+      'accept-language': 'en-US,en;q=0.9',
+    },
+  },
+  {
+    label: 'async-openai/0.27.2 (Rust reqwest/0.12 • Linux x64)',
+    userAgent: 'async-openai/0.27.2 reqwest/0.12.12',
+    headers: {
+      'user-agent': 'async-openai/0.27.2 reqwest/0.12.12',
+      'accept-language': 'en-GB,en;q=0.9',
+    },
+  },
+  {
+    label: 'OpenAI/Python 1.57.4 (Win11 amd64 • Py 3.11)',
+    userAgent: 'OpenAI/Python 1.57.4',
+    headers: {
+      'user-agent': 'OpenAI/Python 1.57.4',
+      'x-stainless-lang': 'python',
+      'x-stainless-package-version': '1.57.4',
+      'x-stainless-os': 'Windows',
+      'x-stainless-arch': 'amd64',
+      'x-stainless-runtime': 'CPython',
+      'x-stainless-runtime-version': '3.11.8',
+      'accept-language': 'en-US,en;q=0.9',
+    },
+  },
+  {
+    label: 'OpenAI/JS 4.79.3 (Deno 2.1.9 • Linux x64)',
+    userAgent: 'OpenAI/JS 4.79.3',
+    headers: {
+      'user-agent': 'OpenAI/JS 4.79.3',
+      'x-stainless-lang': 'js',
+      'x-stainless-package-version': '4.79.3',
+      'x-stainless-os': 'Linux',
+      'x-stainless-arch': 'x64',
+      'x-stainless-runtime': 'deno',
+      'x-stainless-runtime-version': '2.1.9',
+      'accept-language': 'en-US,en;q=0.9',
+    },
+  },
+  {
+    label: 'zhipuai-sdk-java/2.3.0 (OkHttp 4.12 • Java 17)',
+    userAgent: 'zhipuai-sdk-java/2.3.0 okhttp/4.12.0',
+    headers: {
+      'user-agent': 'zhipuai-sdk-java/2.3.0 okhttp/4.12.0',
+      'x-request-sdk': 'zhipuai-sdk-java/2.3.0',
+      'accept-language': 'zh-CN,zh;q=0.9,en-US;q=0.8',
+    },
+  },
+  {
+    label: 'python-httpx/0.28.1 (Linux aarch64 • Py 3.13)',
+    userAgent: 'python-httpx/0.28.1',
+    headers: {
+      'user-agent': 'python-httpx/0.28.1',
+      'accept-language': 'id-ID,id;q=0.9,en-US;q=0.8',
+    },
+  },
+];
+
+function fnv1aHash(input: string): number {
+  let hash = 0x811c9dc5;
+  for (let i = 0; i < input.length; i++) {
+    hash ^= input.charCodeAt(i);
+    hash = Math.imul(hash, 0x01000193);
+  }
+  return hash >>> 0;
+}
+
+/**
+ * Resolve the isolated SDK Fingerprint Persona for a specific `provider_connections` row.
+ * Uses explicit `personaSlot` in `metadata_json` if present (assigned sequentially per provider),
+ * or falls back to a deterministic FNV-1a hash of `connectionId:provider`.
+ */
+export function resolveAccountSdkPersona(
+  connectionId: string,
+  provider: string,
+  metadataJson?: string | null
+): SdkFingerprintPersona {
+  let slot: number | null = null;
+  if (metadataJson) {
+    try {
+      const parsed = JSON.parse(metadataJson) as { personaSlot?: unknown };
+      if (typeof parsed.personaSlot === 'number' && Number.isFinite(parsed.personaSlot)) {
+        slot = Math.abs(Math.trunc(parsed.personaSlot)) % SDK_FINGERPRINT_POOL.length;
+      }
+    } catch {
+      // ignore invalid JSON
+    }
+  }
+  if (slot === null) {
+    slot = fnv1aHash(`${connectionId}:${provider}`) % SDK_FINGERPRINT_POOL.length;
+  }
+  const base = SDK_FINGERPRINT_POOL[slot];
+  return {
+    slot,
+    label: base.label,
+    userAgent: base.userAgent,
+    headers: { ...base.headers },
+  };
+}
+
+
 /**
  * Format a `CanonicalResponse` into the client's requested inbound protocol JSON
  */
@@ -429,11 +662,26 @@ export async function executeUpstreamCandidate(
       : getDefaultBaseUrlForProvider(connection.provider)
   ).replace(/\/+$/, '');
 
+  const persona = resolveAccountSdkPersona(
+    connection.id,
+    connection.provider,
+    connection.metadataJson
+  );
+
   let url = `${baseUrl}/chat/completions`;
   const headers: Record<string, string> = {
     'content-type': 'application/json',
+    accept: req.stream ? 'text/event-stream' : 'application/json',
+    ...persona.headers,
     ...(creds.extraHeaders ?? {}),
   };
+
+  // Strip any proxy-identifying headers so each account appears as a direct SDK client
+  delete headers['x-forwarded-for'];
+  delete headers['x-real-ip'];
+  delete headers['cf-connecting-ip'];
+  delete headers['via'];
+
   let bodyObj: Record<string, unknown>;
 
   if (upstreamProto === 'anthropic-messages') {

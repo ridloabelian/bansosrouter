@@ -38,6 +38,7 @@ import {
 import { runTokenCompressionPipeline } from '../lib/compression';
 import { dispatchWebhookEvent } from '../lib/webhooks';
 import { runScheduledMaintenance } from '../lib/oauth';
+import { resolveAccountSdkPersona, SDK_FINGERPRINT_POOL } from '../sse/executor';
 
 export const adminRouter = new Hono<{ Bindings: FlareRouteEnv }>();
 
@@ -102,10 +103,10 @@ adminRouter.get('/overview', async (c) => {
               window_reset_at AS windowResetAt, token_expires_at AS tokenExpiresAt,
               status, consecutive_failures AS consecutiveFailures, avg_latency_ms AS avgLatencyMs,
               total_requests AS totalRequests, total_tokens AS totalTokens, total_cost_usd AS totalCostUsd,
-              supported_models_json AS supportedModelsJson, last_used_at AS lastUsedAt,
-              last_error AS lastError, created_at AS createdAt
+              supported_models_json AS supportedModelsJson, metadata_json AS metadataJson,
+              last_used_at AS lastUsedAt, last_error AS lastError, created_at AS createdAt
        FROM provider_connections ORDER BY priority ASC, created_at DESC`
-    ).all<Omit<ProviderConnectionRow, 'encryptedCredentials' | 'metadataJson' | 'updatedAt'>>(),
+    ).all<Omit<ProviderConnectionRow, 'encryptedCredentials' | 'updatedAt'>>(),
     c.env.DB.prepare(
       `SELECT id, slug, name, description, strategy, candidates_json AS candidatesJson,
               judge_model AS judgeModel, max_context_threshold AS maxContextThreshold,
@@ -164,6 +165,15 @@ adminRouter.get('/overview', async (c) => {
     }>(),
   ]);
 
+  const enrichedConnections = connectionsRes.results.map((conn) => {
+    const persona = resolveAccountSdkPersona(conn.id, conn.provider, conn.metadataJson);
+    return {
+      ...conn,
+      sdkPersona: persona.label,
+      sdkPersonaSlot: persona.slot,
+    };
+  });
+
   return c.json({
     stats: statsRow ?? {
       totalRequests: 0,
@@ -173,7 +183,7 @@ adminRouter.get('/overview', async (c) => {
       totalCostUsd: 0,
       avgLatencyMs: 0,
     },
-    connections: connectionsRes.results,
+    connections: enrichedConnections,
     combos: combosRes.results,
     apiKeys: apiKeysRes.results,
     recentLogs: recentLogsRes.results,
@@ -235,6 +245,31 @@ adminRouter.post('/connections', async (c) => {
     c.env.ENCRYPTION_SECRET
   );
 
+  // Assign a unique SDK Fingerprint Slot (0..15) among existing accounts of the same provider
+  const siblingRows = await c.env.DB.prepare(
+    `SELECT id, metadata_json AS metadataJson FROM provider_connections WHERE provider = ?`
+  )
+    .bind(provider)
+    .all<{ id: string; metadataJson: string }>();
+
+  const usedSlots = new Set<number>();
+  for (const row of siblingRows.results) {
+    const existingPersona = resolveAccountSdkPersona(row.id, provider, row.metadataJson);
+    usedSlots.add(existingPersona.slot);
+  }
+  let assignedSlot = siblingRows.results.length % SDK_FINGERPRINT_POOL.length;
+  for (let candidate = 0; candidate < SDK_FINGERPRINT_POOL.length; candidate++) {
+    if (!usedSlots.has(candidate)) {
+      assignedSlot = candidate;
+      break;
+    }
+  }
+  const assignedPersona = resolveAccountSdkPersona(
+    id,
+    provider,
+    JSON.stringify({ personaSlot: assignedSlot })
+  );
+
   const windowResetAt = now + 5 * 3600 * 1000;
   const resolvedModels =
     body.supportedModels && body.supportedModels.length > 0
@@ -246,8 +281,8 @@ adminRouter.post('/connections', async (c) => {
       id, name, provider, auth_type, encrypted_credentials, account_label, base_url,
       priority, weight, tier, tos_risk, daily_token_limit, tokens_used_today,
       window_token_limit, tokens_used_window, window_reset_at, status,
-      supported_models_json, created_at, updated_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'free', ?, ?, 0, ?, 0, ?, 'active', ?, ?, ?)`
+      supported_models_json, metadata_json, created_at, updated_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'free', ?, ?, 0, ?, 0, ?, 'active', ?, ?, ?, ?)`
   )
     .bind(
       id,
@@ -264,12 +299,18 @@ adminRouter.post('/connections', async (c) => {
       body.windowTokenLimit ?? 500000,
       windowResetAt,
       JSON.stringify(resolvedModels),
+      JSON.stringify({ personaSlot: assignedSlot }),
       now,
       now
     )
     .run();
 
-  return c.json({ ok: true, id });
+  return c.json({
+    ok: true,
+    id,
+    sdkPersona: assignedPersona.label,
+    sdkPersonaSlot: assignedPersona.slot,
+  });
 });
 
 /**

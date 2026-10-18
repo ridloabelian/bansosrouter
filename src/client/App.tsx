@@ -45,6 +45,8 @@ interface ConnectionItem {
   totalRequests: number;
   totalTokens: number;
   totalCostUsd: number;
+  sdkPersona?: string;
+  sdkPersonaSlot?: number;
 }
 
 interface ComboItem {
@@ -1655,6 +1657,11 @@ aider --model openai/bansos/coding`;
                               Provider: <code className="text-emerald-300">{conn.provider}</code> •
                               Auth: <code>{conn.authType}</code> • Biaya: <strong className="text-emerald-400">Rp 0</strong>
                             </p>
+                            {conn.sdkPersona && (
+                              <p className="mt-1 text-[11px] text-cyan-300/90 font-mono">
+                                🛡️ SDK Persona #{conn.sdkPersonaSlot ?? 0}: {conn.sdkPersona}
+                              </p>
+                            )}
                           </div>
                         </div>
                         <span className="rounded-full bg-emerald-500/15 px-2.5 py-0.5 text-[11px] font-medium text-emerald-300">

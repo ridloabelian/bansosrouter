@@ -16,6 +16,7 @@ import {
   createOutboundProtocolStream,
   getUpstreamProtocolForProvider,
   getDefaultBaseUrlForProvider,
+  resolveAccountSdkPersona,
 } from '../sse/executor';
 import {
   estimateRequestTokens,
@@ -410,10 +411,16 @@ async function handleUnifiedInference(
       );
 
       const latencyMs = Date.now() - attemptStart;
+      const persona = resolveAccountSdkPersona(
+        candidate.connection.id,
+        candidate.provider,
+        candidate.connection.metadataJson
+      );
       const transparencyHeaders: Record<string, string> = {
         'X-BansosRouter-Provider': candidate.provider,
         'X-BansosRouter-Model': candidate.model,
         'X-BansosRouter-Strategy': route.strategyUsed,
+        'X-BansosRouter-Account-Persona': `Slot #${persona.slot}: ${persona.label}`,
         'X-BansosRouter-Cost-USD': '0.000000',
         'X-BansosRouter-Cost-IDR': 'Rp 0',
         'X-BansosRouter-Tokens-Saved': String(compressionStats.tokensSaved),
