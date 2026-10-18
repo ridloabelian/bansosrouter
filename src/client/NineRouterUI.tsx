@@ -81,7 +81,7 @@ export const PROVIDER_PNG_MAP: Record<string, string> = {
 export function ProviderIcon({
   providerId,
   textIcon,
-  color = '#E56A4A',
+  color = '#10B981',
   size = 32,
   className = '',
 }: {
@@ -211,7 +211,7 @@ export function Button({
 
   const variants: Record<string, string> = {
     primary:
-      'bg-gradient-to-b from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 text-white shadow-[0_2px_10px_-2px_rgba(229,106,74,0.4)] active:scale-[0.99]',
+      'bg-gradient-to-b from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 text-white shadow-[0_2px_10px_-2px_rgba(16,185,129,0.4)] active:scale-[0.99]',
     secondary:
       'bg-surface border border-border text-text-main hover:bg-black/5 dark:hover:bg-white/5 active:scale-[0.99]',
     outline:
